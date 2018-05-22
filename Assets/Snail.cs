@@ -11,7 +11,9 @@ public class Snail : MonoBehaviour
 	
 	// TODO - Remove from inspector
 	[SerializeField] [Range(0, 100)] private float _fullness = 100f;
-	[Tooltip("% per second")] [SerializeField] private float _hungerSpeed = 0.1f; // Hunger per second
+	
+	[Tooltip("% per second")] [SerializeField] private float _hungerSpeed = 0.1f;
+	[Tooltip("In units")] [SerializeField] private float _maxWanderDistance = 5f;
 
 	// Pre-calculated for perfomance
 	private float _hungerFactor = 1f / GameController.TICK_PER_SECOND;
@@ -88,10 +90,20 @@ public class Snail : MonoBehaviour
 	protected void HandleNeeds()
 	{
 		if (IsHungry())
-		{
-			GameObject nearbyFood = GameController.WorldController.GetFoodNear(transform.position);
-			if (nearbyFood != null)
-				SetDestination(nearbyFood.transform.position);
-		}
+			LookForFood();
+		else
+			WanderAround();
+	}
+
+	public void WanderAround()
+	{
+		SetDestination(GameController.WorldController.GetNearbyWanderLocation(transform.position, _maxWanderDistance));
+	}
+
+	public void LookForFood()
+	{
+		GameObject nearbyFood = GameController.WorldController.GetFoodNear(transform.position);
+		if (nearbyFood != null)
+			SetDestination(nearbyFood.transform.position);
 	}
 }

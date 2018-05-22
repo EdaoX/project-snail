@@ -1935,6 +1935,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114775603669035588, guid: f2f9c389904004bf2a5998ae205cc24e,
+        type: 2}
+      propertyPath: _maxWanderDistance
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 65809457538604038, guid: f2f9c389904004bf2a5998ae205cc24e, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: f2f9c389904004bf2a5998ae205cc24e, type: 2}
