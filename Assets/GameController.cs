@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(WorldController))]
 public class GameController : MonoBehaviour {
 
 	public const int TICK_PER_SECOND = 20;
 	private float _timeBetweenUpdates;
 	private float _elapsedTimeFromLastUpdate;
-
-	[SerializeField] private Snail _snail;
-	[SerializeField] private NavMeshSurface _navMesh;
+	
+	private static WorldController _worldController;
 	
 	void Start ()
 	{
 		_timeBetweenUpdates = 1f / TICK_PER_SECOND;
 		_elapsedTimeFromLastUpdate = _timeBetweenUpdates;
+		_worldController = GetComponent<WorldController>();
 	}
 	
 	void Update ()
@@ -28,16 +29,7 @@ public class GameController : MonoBehaviour {
 
 	void ExecuteLogic()
 	{
-		if (!_snail.HasTask() && _snail.IsHungry())
-		{
-			GameObject food = GameObject.FindWithTag("Food");
-			if (food != null)
-			{
-				_snail.SetDestination(food.transform.position);
-			}
-		}
-		
-		_snail.TickUpdate();
+		_worldController.TickUpdate();
 	}
 
 	void ComputeTick()
