@@ -35,15 +35,20 @@ public class Snail : MonoBehaviour
 	{
 		ProgressHunger();
 		
+		HandleNeeds();
+		
+		CheckNewDestination();
+
+		if (IsAtDestination())
+			_hasTask = false;
+	}
+
+	protected void CheckNewDestination()
+	{
 		if (currentDestination != agent.destination)
 		{
 			agent.SetDestination(currentDestination);
 			_hasTask = true;
-		}
-
-		if (IsAtDestination())
-		{
-			_hasTask = false;
 		}
 	}
 
@@ -71,11 +76,21 @@ public class Snail : MonoBehaviour
 	{
 		switch (other.gameObject.tag)
 		{
-			case "Food" :
+			case "Food" : // TODO - Food should be parameterized (static class Tags?)
 				// TODO - fullness info should belong to a Food class
 				_fullness = Mathf.Min(100, _fullness + 20);
 				Destroy(other.gameObject);
 				break;
+		}
+	}
+
+	protected void HandleNeeds()
+	{
+		if (IsHungry())
+		{
+			GameObject nearbyFood = GameController.WorldController.GetFoodNear(transform.position);
+			if (nearbyFood != null)
+				SetDestination(nearbyFood.transform.position);
 		}
 	}
 }

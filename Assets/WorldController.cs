@@ -5,7 +5,7 @@ public class WorldController : MonoBehaviour
 {
 
 	[SerializeField] private NavMeshSurface _navMesh;
-	[SerializeField] private Snail _snail;
+	[SerializeField] private Snail[] _snails;
 	
 	void Start()
 	{
@@ -14,15 +14,16 @@ public class WorldController : MonoBehaviour
 	
 	public void TickUpdate () 
 	{
-		if (!_snail.HasTask() && _snail.IsHungry())
+		foreach (Snail snail in _snails)
 		{
-			GameObject food = GameObject.FindWithTag("Food");
-			if (food != null)
-			{
-				_snail.SetDestination(food.transform.position);
-			}
+			snail.TickUpdate();
 		}
-		
-		_snail.TickUpdate();
+	}
+
+	public GameObject GetFoodNear(Vector3 position)
+	{
+		// TODO - Should return closest food to position
+		GameObject food = GameObject.FindWithTag("Food"); // TODO - Food should be parameterized (static class Tags?)
+		return food;
 	}
 }

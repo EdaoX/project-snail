@@ -1736,7 +1736,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _navMesh: {fileID: 606314131}
-  _snail: {fileID: 1882816405}
+  _snails:
+  - {fileID: 1882816405}
 --- !u!1 &1301689314
 GameObject:
   m_ObjectHideFlags: 0

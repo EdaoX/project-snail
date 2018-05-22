@@ -9,7 +9,13 @@ public class GameController : MonoBehaviour {
 	private float _elapsedTimeFromLastUpdate;
 	
 	private static WorldController _worldController;
-	
+
+	public static WorldController WorldController
+	{
+		get { return _worldController; }
+	}
+
+
 	void Start ()
 	{
 		_timeBetweenUpdates = 1f / TICK_PER_SECOND;
