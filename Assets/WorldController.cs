@@ -22,8 +22,8 @@ public class WorldController : MonoBehaviour
 
 	public GameObject GetFoodNear(Vector3 position)
 	{
-		// TODO - Should return closest food to position
-		GameObject food = GameObject.FindWithTag("Food"); // TODO - Food should be parameterized (static class Tags?)
-		return food;
+		// TODO - Food should be parameterized (static class Tags?)
+		return GameController.GetNearestWithTag(position, "Food");
 	}
+	
 }

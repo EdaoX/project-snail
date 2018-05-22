@@ -52,4 +52,26 @@ public class GameController : MonoBehaviour {
 	{
 		_elapsedTimeFromLastUpdate = 0;
 	}
+
+	public static GameObject GetNearestWithTag( Vector3 position, string tag )
+	{
+		GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
+		
+		float minDistance = Mathf.Infinity;
+		GameObject closestObject = null;
+		
+		foreach (GameObject currentObject in objects)
+		{
+			// Using sqrMagnitude for slightly better performance
+			float approxDistance = (position - currentObject.transform.position).sqrMagnitude;
+			
+			if (approxDistance < minDistance)
+			{
+				minDistance = approxDistance;
+				closestObject = currentObject;
+			}
+		}
+
+		return closestObject;
+	}
 }

@@ -35,7 +35,8 @@ public class Snail : MonoBehaviour
 	{
 		ProgressHunger();
 		
-		HandleNeeds();
+		if(!HasTask())
+			HandleNeeds();
 		
 		CheckNewDestination();
 
