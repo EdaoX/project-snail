@@ -77,18 +77,23 @@ public class Snail : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
-		switch (other.gameObject.tag)
+		Food food = other.gameObject.GetComponent<Food>();
+		if (food != null)
 		{
-			case "Food" : // TODO - Food should be parameterized (static class Tags?)
-				// TODO - fullness info should belong to a Food class
-				_fullness = Mathf.Min(100, _fullness + 20);
-				Destroy(other.gameObject);
-				break;
+			float newFullness = _fullness + food.Eat();
+			_fullness = Mathf.Min(100, newFullness);
+			if(food.IsEmpty())
+				food.Delete();
 		}
 	}
 
 	protected void HandleNeeds()
 	{
+		// TODO - Temporary, as it stops doing anything if it can't find food.
+		// Should loop over possible tasks untill it finds a suitable one
+		// LookForFood and WanderAround could be Task Class/Interface and
+		// methods return true or false depending if it can be accomplished
+		// Then if(Task.canAccomplish){ Task.accomplish(); _hasTask = true}
 		if (IsHungry())
 			LookForFood();
 		else
@@ -97,12 +102,12 @@ public class Snail : MonoBehaviour
 
 	public void WanderAround()
 	{
-		SetDestination(GameController.WorldController.GetNearbyWanderLocation(transform.position, _maxWanderDistance));
+		SetDestination(WorldController.GetNearbyWanderLocation(transform.position, _maxWanderDistance));
 	}
 
 	public void LookForFood()
 	{
-		GameObject nearbyFood = GameController.WorldController.GetFoodNear(transform.position);
+		Food nearbyFood = WorldController.GetFoodNear(transform.position);
 		if (nearbyFood != null)
 			SetDestination(nearbyFood.transform.position);
 	}

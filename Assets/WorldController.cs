@@ -7,11 +7,6 @@ public class WorldController : MonoBehaviour
 	[SerializeField] private NavMeshSurface _navMesh;
 	[SerializeField] private Snail[] _snails;
 	
-	void Start()
-	{
-		
-	}
-	
 	public void TickUpdate () 
 	{
 		foreach (Snail snail in _snails)
@@ -20,21 +15,17 @@ public class WorldController : MonoBehaviour
 		}
 	}
 
-	public GameObject GetFoodNear(Vector3 position)
+	public static Food GetFoodNear(Vector3 position)
 	{
-		// TODO - Food should be parameterized (static class Tags?)
-		return GameController.GetNearestWithTag(position, "Food");
+		// TODO - Don't query: keep an internal array of food items
+		Food[] foods = FindObjectsOfType<Food>();
+		return GameController.GetNearest<Food>(position, foods);
 	}
 
-	public Vector3 GetNearbyWanderLocation(Vector3 position, float maxDistance = 1f)
+	public static Vector3 GetNearbyWanderLocation(Vector3 position, float maxDistance = 1f)
 	{
 		Vector3 randomDirection = Random.insideUnitCircle * maxDistance;
 		NavMeshHit hit;
-		if (NavMesh.SamplePosition(position + randomDirection, out hit, maxDistance, 1))
-		{
-			return hit.position;
-		}
-		
-		return Vector3.zero;
+		return NavMesh.SamplePosition(position + randomDirection, out hit, maxDistance, 1) ? hit.position : Vector3.zero;
 	}
 }

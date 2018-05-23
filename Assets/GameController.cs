@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(WorldController))]
@@ -33,34 +34,32 @@ public class GameController : MonoBehaviour {
 		ResetTick();
 	}
 
-	void ExecuteLogic()
+	private void ExecuteLogic()
 	{
 		_worldController.TickUpdate();
 	}
 
-	void ComputeTick()
+	private void ComputeTick()
 	{
 		_elapsedTimeFromLastUpdate = Mathf.Min(_elapsedTimeFromLastUpdate + Time.deltaTime, _timeBetweenUpdates);
 	}
 
-	bool ShouldUpdate()
+	private bool ShouldUpdate()
 	{
 		return (_timeBetweenUpdates - _elapsedTimeFromLastUpdate) < Mathf.Epsilon;
 	}
 
-	void ResetTick()
+	private void ResetTick()
 	{
 		_elapsedTimeFromLastUpdate = 0;
 	}
 
-	public static GameObject GetNearestWithTag( Vector3 position, string tag )
+	public static T GetNearest<T>(Vector3 position, IEnumerable<T> objects) where T : Component 
 	{
-		GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
-		
 		float minDistance = Mathf.Infinity;
-		GameObject closestObject = null;
+		T closestObject = default(T);
 		
-		foreach (GameObject currentObject in objects)
+		foreach (T currentObject in objects)
 		{
 			// Using sqrMagnitude for slightly better performance
 			float approxDistance = (position - currentObject.transform.position).sqrMagnitude;
