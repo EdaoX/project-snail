@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4736314262547654}
   - component: {fileID: 195412251020664472}
   - component: {fileID: 114775603669035588}
-  - component: {fileID: 65809457538604038}
+  - component: {fileID: 65749363171399348}
   m_Layer: 9
   m_Name: Snail
   m_TagString: Snail
@@ -67,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1042186186189952}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.66, y: 0, z: -1.88}
+  m_LocalPosition: {x: 6.75, y: 0, z: -3.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4552827559444172}
@@ -124,11 +124,11 @@ BoxCollider:
   m_GameObject: {fileID: 1279853920392712}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65809457538604038
+--- !u!65 &65749363171399348
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -151,6 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff03f35774505ad4084fdb8fb86d191d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reach: 1
+  _fullness: 100
+  _hungerSpeed: 0.1
+  _maxWanderDistance: 15
 --- !u!195 &195412251020664472
 NavMeshAgent:
   m_ObjectHideFlags: 1

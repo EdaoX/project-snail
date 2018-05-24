@@ -5,9 +5,26 @@ public class Snail : MonoBehaviour
 {
 	protected const int HUNGER_THRESHOLD = 30;
 	
-	protected Vector3 currentDestination;
+	protected Food target; // TODO - Temporary, shouldn't be food but something like ITargetable
 	protected NavMeshAgent agent;
-	private bool _hasTask = false;
+
+	private bool _hasTask;
+
+	public bool HasTask
+	{
+		get { return _hasTask; }
+		set
+		{
+			IsWandering = false;
+			_hasTask = value;
+		}
+	}
+
+
+	public bool IsWandering { get; protected set; }
+
+	// TODO - Remove from here, put into ITargetable
+	[Tooltip("In meters")] [SerializeField] private float _reach = 1f;
 	
 	// TODO - Remove from inspector
 	[SerializeField] [Range(0, 100)] private float _fullness = 100f;
@@ -20,49 +37,70 @@ public class Snail : MonoBehaviour
 
 	void Start()
 	{
-		currentDestination = transform.position;
 		agent = GetComponent<NavMeshAgent>();
 	}
 	
+	
+	// TODO - Make Properties
 	public void SetDestination(Vector3 destination)
 	{
-		currentDestination = destination;
+		agent.isStopped = false;
+		agent.destination = destination;
 	}
 
-	public void Update()
+	public void ClearDestination()
 	{
+		agent.isStopped = true;
 	}
 
 	public void TickUpdate()
 	{
 		ProgressHunger();
 		
-		if(!HasTask())
+		if(!HasTask)
 			HandleNeeds();
 		
-		CheckNewDestination();
+		CheckNearTarget();
 
-		if (IsAtDestination())
-			_hasTask = false;
+		CheckReachedWanderingDestination();
+
 	}
 
-	protected void CheckNewDestination()
+	private void CheckReachedWanderingDestination()
 	{
-		if (currentDestination != agent.destination)
+		if (IsWandering && IsAtDestination())
+			IsWandering = false;
+	}
+
+	protected void CheckNearTarget()
+	{
+		if (target != null)
 		{
-			agent.SetDestination(currentDestination);
-			_hasTask = true;
+			if (Vector3.Distance(transform.position, target.transform.position) < _reach)
+			{
+				InteractWith(target);
+				ClearTarget();
+			}
 		}
+	}
+
+	// TODO - Temporary
+	// TODO - Make Properties
+	public void SetTarget(Food food)
+	{
+		SetDestination(food.transform.position);
+		target = food;
+	}
+
+	public void ClearTarget()
+	{
+		target = null;
+		ClearDestination();
 	}
 
 	private void ProgressHunger()
 	{
 		_fullness = Mathf.Max(0, _fullness - _hungerSpeed * _hungerFactor);
-	}
-
-	public bool HasTask()
-	{
-		return _hasTask;
 	}
 
 	public bool IsHungry()
@@ -75,15 +113,16 @@ public class Snail : MonoBehaviour
 		return agent.remainingDistance <= agent.stoppingDistance;
 	}
 
-	private void OnCollisionEnter(Collision other)
+	// TODO - Temporary, should be generalized
+	private void InteractWith(Food food)
 	{
-		Food food = other.gameObject.GetComponent<Food>();
 		if (food != null)
 		{
-			float newFullness = _fullness + food.Eat();
+			float newFullness = _fullness + food.Eat(.5f);
 			_fullness = Mathf.Min(100, newFullness);
 			if(food.IsEmpty())
 				food.Delete();
+			HasTask = false;
 		}
 	}
 
@@ -95,20 +134,28 @@ public class Snail : MonoBehaviour
 		// methods return true or false depending if it can be accomplished
 		// Then if(Task.canAccomplish){ Task.accomplish(); _hasTask = true}
 		if (IsHungry())
+		{
 			LookForFood();
-		else
+			HasTask = true;
+		}
+		else if (!IsWandering)
+		{
 			WanderAround();
+		}
 	}
 
 	public void WanderAround()
 	{
 		SetDestination(WorldController.GetNearbyWanderLocation(transform.position, _maxWanderDistance));
+		IsWandering = true;
 	}
 
 	public void LookForFood()
 	{
 		Food nearbyFood = WorldController.GetFoodNear(transform.position);
 		if (nearbyFood != null)
-			SetDestination(nearbyFood.transform.position);
+		{
+			SetTarget(nearbyFood);
+		}
 	}
 }
