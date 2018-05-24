@@ -809,11 +809,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198095316356431430, guid: 8bd2ecaecef294c8ba27180f10f79f59,
-        type: 2}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8bd2ecaecef294c8ba27180f10f79f59, type: 2}
   m_IsPrefabParent: 0

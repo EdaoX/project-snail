@@ -5,6 +5,7 @@ public class Food : MonoBehaviour
 {
 
 	[SerializeField] protected float totalFoodValue = 30f;
+	[SerializeField] private ParticleSystem _particleSystem;
 
 	private float _foodValueLeft;
 
@@ -28,7 +29,14 @@ public class Food : MonoBehaviour
 		
 		ApplyNewScale();
 
+		PlayVfx();
+
 		return eatenValue;
+	}
+
+	public void PlayVfx()
+	{
+		_particleSystem.Emit(1);
 	}
 
 	private void SubtractFoodValue(float eatenValue)
@@ -54,6 +62,11 @@ public class Food : MonoBehaviour
 	}
 
 	public void Delete()
+	{
+		Invoke("RemoveFromWorld", _particleSystem.main.duration);
+	}
+
+	private void RemoveFromWorld()
 	{
 		Destroy(gameObject);
 	}
