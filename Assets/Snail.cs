@@ -132,7 +132,6 @@ public class Snail : MonoBehaviour
 
 	protected void HandleNeeds()
 	{
-		// TODO - Temporary, as it stops doing anything if it can't find food.
 		// Should loop over possible tasks untill it finds a suitable one
 		// LookForFood and WanderAround could be Task Class/Interface and
 		// methods return true or false depending if it can be accomplished
