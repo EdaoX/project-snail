@@ -5,10 +5,20 @@ public class Snail : MonoBehaviour
 {
 	protected const int HUNGER_THRESHOLD = 30;
 	
+	// TODO - Remove from here, put into ITargetable
+	[Tooltip("In meters")] [SerializeField] private float _reach = 1f;
+	
+	// TODO - Remove from inspector
+	[SerializeField] [Range(0, 100)] private float _fullness = 100f;
+	
+	[Tooltip("% per second")] [SerializeField] private float _hungerSpeed = 0.1f;
+	[Tooltip("In units")] [SerializeField] private float _maxWanderDistance = 5f;
+	
 	protected Food target; // TODO - Temporary, shouldn't be food but something like ITargetable
 	protected NavMeshAgent agent;
 
 	private bool _hasTask;
+	private float _hungerFactor = 1f / GameController.TICK_PER_SECOND; // Pre-calculated for perfomance
 
 	public bool HasTask
 	{
@@ -22,18 +32,6 @@ public class Snail : MonoBehaviour
 
 
 	public bool IsWandering { get; protected set; }
-
-	// TODO - Remove from here, put into ITargetable
-	[Tooltip("In meters")] [SerializeField] private float _reach = 1f;
-	
-	// TODO - Remove from inspector
-	[SerializeField] [Range(0, 100)] private float _fullness = 100f;
-	
-	[Tooltip("% per second")] [SerializeField] private float _hungerSpeed = 0.1f;
-	[Tooltip("In units")] [SerializeField] private float _maxWanderDistance = 5f;
-
-	// Pre-calculated for perfomance
-	private float _hungerFactor = 1f / GameController.TICK_PER_SECOND;
 
 	void Start()
 	{
