@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class Snail : MonoBehaviour
 {
+	protected const string HAND_ANCHOR_POINT_NAME = "HandAnchorPoint";
 	
 	// TODO - Remove from here, put into ITargetable
 	[Tooltip("In meters")] [SerializeField] private float _reach = 1f;
@@ -15,7 +16,9 @@ public class Snail : MonoBehaviour
 	[Tooltip("In units")] [SerializeField] private float _maxWanderDistance = 5f;
 	
 	protected Food target; // TODO - Temporary, shouldn't be food but something like ITargetable
+	protected Food held; // TODO - Temporary, shouldn't be food but something like IHoldable
 	protected NavMeshAgent agent;
+	protected Vector3 handPosition;
 
 	private bool _hasTask;
 	private float _hungerFactor = 1f / GameController.TICK_PER_SECOND; // Pre-calculated for perfomance
@@ -42,6 +45,7 @@ public class Snail : MonoBehaviour
 	void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
+		handPosition = transform.Find("HandAnchorPoint").localPosition;
 	}
 	
 	
@@ -122,24 +126,41 @@ public class Snail : MonoBehaviour
 	{
 		if (food != null)
 		{
-			float newFullness = _fullness + food.Eat(.5f);
-			_fullness = Mathf.Min(100, newFullness);
-			if(food.IsEmpty())
-				food.Delete();
+			PickUp(food);
 			HasTask = false;
 		}
 	}
 
+	private void PickUp(Food food)
+	{
+		food.transform.parent = transform;
+		food.transform.localPosition = handPosition;
+		held = food; // TODO - property so that above lines are implicit
+	}
+
 	protected void HandleNeeds()
 	{
+		// TODO - Temporary
 		// Should loop over possible tasks untill it finds a suitable one
 		// LookForFood and WanderAround could be Task Class/Interface and
 		// methods return true or false depending if it can be accomplished
 		// Then if(Task.canAccomplish){ Task.accomplish(); _hasTask = true}
 		if (IsHungry())
 		{
-			LookForFood();
-			HasTask = true;
+			if (held != null)
+			{
+				Fullness += held.RemovePart(.5f);
+				if (held.IsEmpty())
+				{
+					held.Delete();
+					held = null;
+				}
+			}
+			else
+			{
+				LookForFood();
+				HasTask = true;
+			}
 		}
 		else if (!IsWandering)
 		{
