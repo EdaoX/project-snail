@@ -20,7 +20,7 @@ public class Food : MonoBehaviour
 		
 	}
 
-	public float Eat(float percentage = 1f)
+	public float RemovePart(float percentage = 1f)
 	{
 		float eatenValue = CalculateEatenValue(percentage);
 		
