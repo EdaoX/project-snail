@@ -3,7 +3,6 @@ using UnityEngine.AI;
 
 public class Snail : MonoBehaviour
 {
-	protected const int HUNGER_THRESHOLD = 30;
 	
 	// TODO - Remove from here, put into ITargetable
 	[Tooltip("In meters")] [SerializeField] private float _reach = 1f;
@@ -11,6 +10,7 @@ public class Snail : MonoBehaviour
 	// TODO - Remove from inspector
 	[SerializeField] [Range(0, 100)] private float _fullness = 100f;
 	
+	[SerializeField] [Range(0,100)] protected int hungerThreshold = 30;
 	[Tooltip("% per second")] [SerializeField] private float _hungerSpeed = 0.1f;
 	[Tooltip("In units")] [SerializeField] private float _maxWanderDistance = 5f;
 	
@@ -32,6 +32,12 @@ public class Snail : MonoBehaviour
 
 
 	public bool IsWandering { get; protected set; }
+	
+	public float Fullness
+	{
+		get { return _fullness; }
+		set { _fullness = Mathf.Clamp(value, 0, 100f); }
+	}
 
 	void Start()
 	{
@@ -98,12 +104,12 @@ public class Snail : MonoBehaviour
 
 	private void ProgressHunger()
 	{
-		_fullness = Mathf.Max(0, _fullness - _hungerSpeed * _hungerFactor);
+		Fullness -= _hungerSpeed * _hungerFactor;
 	}
 
 	public bool IsHungry()
 	{
-		return _fullness <= HUNGER_THRESHOLD;
+		return Fullness <= hungerThreshold;
 	}
 
 	public bool IsAtDestination()
