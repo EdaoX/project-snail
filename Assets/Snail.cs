@@ -3,8 +3,6 @@ using UnityEngine.AI;
 
 public class Snail : MonoBehaviour
 {
-	protected const string HAND_ANCHOR_POINT_NAME = "HandAnchorPoint";
-	
 	// TODO - Remove from here, put into ITargetable
 	[Tooltip("In meters")] [SerializeField] private float _reach = 1f;
 	
@@ -14,11 +12,11 @@ public class Snail : MonoBehaviour
 	[SerializeField] [Range(0,100)] protected int hungerThreshold = 30;
 	[Tooltip("% per second")] [SerializeField] private float _hungerSpeed = 0.1f;
 	[Tooltip("In units")] [SerializeField] private float _maxWanderDistance = 5f;
+	[SerializeField] protected Transform handAnchorPoint;
 	
 	protected Food target; // TODO - Temporary, shouldn't be food but something like ITargetable
 	protected Food held; // TODO - Temporary, shouldn't be food but something like IHoldable
 	protected NavMeshAgent agent;
-	protected Vector3 handPosition;
 
 	private bool _hasTask;
 	private float _hungerFactor = 1f / GameController.TICK_PER_SECOND; // Pre-calculated for perfomance
@@ -45,7 +43,6 @@ public class Snail : MonoBehaviour
 	void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
-		handPosition = transform.Find("HandAnchorPoint").localPosition;
 	}
 	
 	
@@ -134,7 +131,7 @@ public class Snail : MonoBehaviour
 	private void PickUp(Food food)
 	{
 		food.transform.parent = transform;
-		food.transform.localPosition = handPosition;
+		food.transform.localPosition = handAnchorPoint.localPosition;
 		held = food; // TODO - property so that above lines are implicit
 	}
 
