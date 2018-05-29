@@ -1,24 +1,43 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
-public class WorldController : MonoBehaviour
+public class WorldController
 {
 
-	[SerializeField] private NavMeshSurface _navMesh;
-	[SerializeField] private Snail[] _snails;
+	protected static WorldController instance;
+
+	public static WorldController Instance
+	{
+		get { return instance ?? (instance = new WorldController()); }
+	}
+
+	protected NavMeshSurface navMesh;
+	protected List<Snail> snails;
+
+	private WorldController()
+	{
+		snails = new List<Snail>();
+		navMesh = Object.FindObjectOfType<NavMeshSurface>(); // TODO - Change to some other way of associating navmesh
+	}
 	
 	public void TickUpdate () 
 	{
-		foreach (Snail snail in _snails)
+		foreach (Snail snail in snails)
 		{
 			snail.TickUpdate();
 		}
 	}
 
+	public void AddSnail(Snail snail)
+	{
+		snails.Add(snail);
+	}
+
 	public static Food GetFoodNear(Vector3 position)
 	{
 		// TODO - Don't query: keep an internal array of food items
-		Food[] foods = FindObjectsOfType<Food>();
+		Food[] foods = Object.FindObjectsOfType<Food>();
 		return GameController.GetNearest<Food>(position, foods);
 	}
 

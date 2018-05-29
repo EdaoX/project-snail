@@ -2,26 +2,22 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(WorldController))]
 public class GameController : MonoBehaviour {
 
 	public const int TICK_PER_SECOND = 20;
 	private float _timeBetweenUpdates;
 	private float _elapsedTimeFromLastUpdate;
+
+	[SerializeField] private GameObject _snailPrefab;
 	
-	private static WorldController _worldController;
-
-	public static WorldController WorldController
-	{
-		get { return _worldController; }
-	}
-
-
 	void Start ()
 	{
 		_timeBetweenUpdates = 1f / TICK_PER_SECOND;
 		_elapsedTimeFromLastUpdate = _timeBetweenUpdates;
-		_worldController = GetComponent<WorldController>();
+
+		GameObject snail = Instantiate(_snailPrefab);
+		snail.transform.position = WorldController.GetNearbyWanderLocation(Vector3.zero, 10f);
+		WorldController.Instance.AddSnail(snail.GetComponent<Snail>());
 	}
 	
 	void Update ()
@@ -36,7 +32,7 @@ public class GameController : MonoBehaviour {
 
 	private void ExecuteLogic()
 	{
-		_worldController.TickUpdate();
+		WorldController.Instance.TickUpdate();
 	}
 
 	private void ComputeTick()
