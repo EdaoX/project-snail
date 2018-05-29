@@ -63,6 +63,7 @@ public class Food : MonoBehaviour
 
 	public void Delete()
 	{
+		WorldController.Instance.RemoveFood(this);
 		Invoke("RemoveFromWorld", _particleSystem.main.duration);
 	}
 

@@ -8,7 +8,9 @@ public class GameController : MonoBehaviour {
 	private float _timeBetweenUpdates;
 	private float _elapsedTimeFromLastUpdate;
 
+	[SerializeField] private Camera _camera;
 	[SerializeField] private GameObject _snailPrefab;
+	[SerializeField] private GameObject _foodPrefab;
 	
 	void Start ()
 	{
@@ -22,12 +24,30 @@ public class GameController : MonoBehaviour {
 	
 	void Update ()
 	{
+		HandleInput();
 		ComputeTick();
 		
 		if (!ShouldUpdate()) return;
 		
 		ExecuteLogic();
 		ResetTick();
+	}
+
+	void HandleInput()
+	{
+		if (Input.GetMouseButtonDown(0))
+		{
+			Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+			
+			RaycastHit hit;
+
+			if (Physics.Raycast(ray, out hit))
+			{
+				Vector3 hitPos = hit.point;
+				GameObject food = Instantiate(_foodPrefab, hit.point, Quaternion.identity);
+				WorldController.Instance.AddFood(food.GetComponent<Food>());
+			}
+		}
 	}
 
 	private void ExecuteLogic()

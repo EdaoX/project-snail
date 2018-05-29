@@ -14,10 +14,12 @@ public class WorldController
 
 	protected NavMeshSurface navMesh;
 	protected List<Snail> snails;
+	protected List<Food> foods;
 
 	private WorldController()
 	{
 		snails = new List<Snail>();
+		foods = new List<Food>();
 		navMesh = Object.FindObjectOfType<NavMeshSurface>(); // TODO - Change to some other way of associating navmesh
 	}
 	
@@ -34,10 +36,18 @@ public class WorldController
 		snails.Add(snail);
 	}
 
-	public static Food GetFoodNear(Vector3 position)
+	public void AddFood(Food food)
 	{
-		// TODO - Don't query: keep an internal array of food items
-		Food[] foods = Object.FindObjectsOfType<Food>();
+		foods.Add(food);
+	}
+
+	public void RemoveFood(Food food)
+	{
+		foods.Remove(food);
+	}
+	
+	public Food GetFoodNear(Vector3 position)
+	{
 		return GameController.GetNearest<Food>(position, foods);
 	}
 

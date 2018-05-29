@@ -156,7 +156,6 @@ public class Snail : MonoBehaviour
 			else
 			{
 				LookForFood();
-				HasTask = true;
 			}
 		}
 		else if (!IsWandering)
@@ -173,10 +172,11 @@ public class Snail : MonoBehaviour
 
 	public void LookForFood()
 	{
-		Food nearbyFood = WorldController.GetFoodNear(transform.position);
+		Food nearbyFood = WorldController.Instance.GetFoodNear(transform.position);
 		if (nearbyFood != null)
 		{
 			SetTarget(nearbyFood);
+			HasTask = true;
 		}
 	}
 }
