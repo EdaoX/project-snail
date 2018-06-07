@@ -54,7 +54,7 @@ public class WorldController
 
 	public static Vector3 GetNearbyWanderLocation(Vector3 position, float maxDistance = 1f)
 	{
-		Vector3 randomDirection = Random.insideUnitCircle * maxDistance;
+		Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
 		NavMeshHit hit;
 		return NavMesh.SamplePosition(position + randomDirection, out hit, maxDistance, 1) ? hit.position : Vector3.zero;
 	}
