@@ -130,6 +130,8 @@ public class Snail : MonoBehaviour
 
 	private void PickUp(Food food)
 	{
+		// Remove from ground objects to avoid other snails picking it up
+		WorldController.Instance.PickFood(food);
 		food.transform.parent = transform;
 		food.transform.localPosition = handAnchorPoint.localPosition;
 		held = food; // TODO - property so that above lines are implicit
