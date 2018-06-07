@@ -177,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 606314132}
   - component: {fileID: 606314131}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Navmesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 872235967}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,6 +376,10 @@ Prefab:
     - target: {fileID: 4687957641007578, guid: 74cd5884c20b94fef8e702244f565e0f, type: 2}
       propertyPath: m_LocalScale.z
       value: 12.9613495
+      objectReference: {fileID: 0}
+    - target: {fileID: 1037170984190992, guid: 74cd5884c20b94fef8e702244f565e0f, type: 2}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 74cd5884c20b94fef8e702244f565e0f, type: 2}

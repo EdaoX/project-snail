@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour {
 			
 			RaycastHit hit;
 
-			if (Physics.Raycast(ray, out hit))
+			if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Ground")))
 			{
 				Vector3 hitPos = hit.point;
 				GameObject food = Instantiate(_foodPrefab, hit.point, Quaternion.identity);
