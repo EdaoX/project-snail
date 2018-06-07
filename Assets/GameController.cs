@@ -11,15 +11,20 @@ public class GameController : MonoBehaviour {
 	[SerializeField] private Camera _camera;
 	[SerializeField] private GameObject _snailPrefab;
 	[SerializeField] private GameObject _foodPrefab;
+	[SerializeField] private int _initalSnails = 1;
 	
 	void Start ()
 	{
 		_timeBetweenUpdates = 1f / TICK_PER_SECOND;
 		_elapsedTimeFromLastUpdate = _timeBetweenUpdates;
 
-		GameObject snail = Instantiate(_snailPrefab);
-		snail.transform.position = WorldController.GetNearbyWanderLocation(Vector3.zero, 10f);
-		WorldController.Instance.AddSnail(snail.GetComponent<Snail>());
+		for (int i = 0; i < _initalSnails; i++)
+		{
+			GameObject snail = Instantiate(_snailPrefab);
+			snail.transform.position = WorldController.GetNearbyWanderLocation(Vector3.zero, 10f);
+			WorldController.Instance.AddSnail(snail.GetComponent<Snail>());
+		}
+		
 	}
 	
 	void Update ()
