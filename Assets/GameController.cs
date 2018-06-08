@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour {
 			{
 				Vector3 hitPos = hit.point;
 				GameObject food = Instantiate(_foodPrefab, hit.point, Quaternion.identity);
-				WorldController.Instance.DropFood(food.GetComponent<Food>());
+				WorldController.Instance.AddPickableFood(food.GetComponent<Food>());
 			}
 		}
 	}

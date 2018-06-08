@@ -103,6 +103,16 @@ public class Snail : MonoBehaviour
 		ClearDestination();
 	}
 
+	public bool HasTarget()
+	{
+		return target != null;
+	}
+
+	public bool HasTarget(Food food)
+	{
+		return HasTarget() && target != food;
+	}
+
 	private void ProgressHunger()
 	{
 		Fullness -= _hungerSpeed * _hungerFactor;
@@ -135,8 +145,6 @@ public class Snail : MonoBehaviour
 
 	private void PickUp(Food food)
 	{
-		// Remove from ground objects to avoid other snails picking it up
-		WorldController.Instance.PickFood(food);
 		food.transform.parent = transform;
 		food.transform.localPosition = handAnchorPoint.localPosition;
 		held = food; // TODO - property so that above lines are implicit
@@ -146,7 +154,7 @@ public class Snail : MonoBehaviour
 	{
 		if (IsHoldingSomething())
 		{
-			WorldController.Instance.DropFood(held);
+			WorldController.Instance.AddPickableFood(held);
 			held = null;
 		}
 	}
@@ -192,6 +200,8 @@ public class Snail : MonoBehaviour
 		if (nearbyFood != null)
 		{
 			SetTarget(nearbyFood);
+			// Remove from pickable objects to avoid other snails setting it as their target
+			WorldController.Instance.RemovePickableFood(nearbyFood);
 			HasTask = true;
 		}
 	}

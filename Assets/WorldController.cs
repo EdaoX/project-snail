@@ -14,12 +14,12 @@ public class WorldController
 
 	protected NavMeshSurface navMesh;
 	protected List<Snail> snails;
-	protected List<Food> foodsOnGround;
+	protected List<Food> pickableFoods;
 
 	private WorldController()
 	{
 		snails = new List<Snail>();
-		foodsOnGround = new List<Food>();
+		pickableFoods = new List<Food>();
 		navMesh = Object.FindObjectOfType<NavMeshSurface>(); // TODO - Change to some other way of associating navmesh
 	}
 	
@@ -36,20 +36,20 @@ public class WorldController
 		snails.Add(snail);
 	}
 
-	public void DropFood(Food food)
+	public void AddPickableFood(Food food)
 	{
-		foodsOnGround.Add(food);
+		pickableFoods.Add(food);
 	}
 
-	public void PickFood(Food food)
+	public void RemovePickableFood(Food food)
 	{
-		if(foodsOnGround.Contains(food))
-			foodsOnGround.Remove(food);
+		if(pickableFoods.Contains(food))
+			pickableFoods.Remove(food);
 	}
 	
 	public Food GetFoodNear(Vector3 position)
 	{
-		return GameController.GetNearest<Food>(position, foodsOnGround);
+		return GameController.GetNearest<Food>(position, pickableFoods);
 	}
 
 	public static Vector3 GetNearbyWanderLocation(Vector3 position, float maxDistance = 1f)
