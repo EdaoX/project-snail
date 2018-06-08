@@ -118,6 +118,11 @@ public class Snail : MonoBehaviour
 		return agent.remainingDistance <= agent.stoppingDistance;
 	}
 
+	public bool IsHoldingSomething()
+	{
+		return held != null;
+	}
+
 	// TODO - Temporary, should be generalized
 	private void InteractWith(Food food)
 	{
@@ -137,6 +142,15 @@ public class Snail : MonoBehaviour
 		held = food; // TODO - property so that above lines are implicit
 	}
 
+	private void Drop()
+	{
+		if (IsHoldingSomething())
+		{
+			WorldController.Instance.DropFood(held);
+			held = null;
+		}
+	}
+
 	protected void HandleNeeds()
 	{
 		// TODO - Temporary
@@ -146,7 +160,7 @@ public class Snail : MonoBehaviour
 		// Then if(Task.canAccomplish){ Task.accomplish(); _hasTask = true}
 		if (IsHungry())
 		{
-			if (held != null)
+			if (IsHoldingSomething())
 			{
 				Fullness += held.RemovePart(.5f);
 				if (held.IsEmpty())
