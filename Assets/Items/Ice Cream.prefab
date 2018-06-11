@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 4740677227301254}
   - component: {fileID: 114196850203068008}
   m_Layer: 10
-  m_Name: Food
+  m_Name: Ice Cream
   m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
